@@ -1,1 +1,38 @@
 
+ion-button {
+    height: 95%;
+}
+
+.slider{
+  padding:3vw;
+}
+
+.imageSlider{
+  height: 28vw;
+  width: 300vw;
+  position: relative;
+  padding-top: 1vw;
+  border: medium 2px;
+}
+
+.footerIcon{
+  width: 5vh;
+  height:5vh;
+}
+
+.footerFont{
+  font-size: 1.5vh;
+  text-align: center;
+  margin:0px;
+}
+
+.trans{
+  width: auto;
+  height: 8vw;
+  align-items: center;
+}
+
+.transFont{
+  font-size: 3vmin;
+  text-align: center;
+}

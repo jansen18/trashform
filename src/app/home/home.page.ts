@@ -1,12 +1,69 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { AchievementService, userInfo } from '../achievement.service';
+import { AuthGuardService } from '../auth/auth-guard.service';
+import { userInfoLocal } from '../userInfo.model';
+import { SafeResourceUrl, DomSanitizer } from '@angular/platform-browser';
+import { Plugins, Capacitor, CameraResultType, CameraSource } from '@capacitor/core';
+import { ToastController } from '@ionic/angular';
+import { defineCustomElements } from '@ionic/pwa-elements/loader';
+defineCustomElements(window);
 
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
 })
-export class HomePage {
+export class HomePage implements OnInit{
 
-  constructor() {}
+  userList: userInfo[];
+  userInfo: userInfoLocal;
+  user: string;
+  photo: SafeResourceUrl;
+  selectedImage: SafeResourceUrl;
+  
+  constructor(
+    private achievementSvc: AchievementService,
+    private authSvc: AuthGuardService,
+    private toastController: ToastController,
+    private sanitizer: DomSanitizer
+  ) {}
+  
+  ngOnInit(){    
+    var i = 0;
+    this.user = this.authSvc.getEmail();
+    this.achievementSvc.getUserInfo(this.user).subscribe(res => {
+      this.userList = res;
+      while(i < res.length){
+        if(res[i].userName == this.user){
+          this.achievementSvc.setLocalUser(res[i]);
+          this.achievementSvc.setLocalUserID(res[i].id);
+          break;
+        }
+        i++;
+      }
+    });
+    // this.userInfo = this.achievementSvc.getUser();
+  }
+
+  async takePicture() {
+    const image = await Plugins.Camera.getPhoto({
+      quality: 100,
+      allowEditing: false,
+      resultType: CameraResultType.DataUrl,
+      source: CameraSource.Camera
+    });
+
+    this.photo = this.sanitizer.bypassSecurityTrustResourceUrl(image && (image.dataUrl));
+    console.log(this.photo)
+  }
+
+  async comingSoon(){
+    const toast = await this.toastController.create({
+      message: 'Coming soon',
+      position: 'bottom',
+      duration: 500
+    });
+    toast.present();
+  }
 
 }

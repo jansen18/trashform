@@ -1,14 +1,124 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>
-      Ionic Blank
-    </ion-title>
+  <ion-toolbar color="success">
+    <ion-buttons slot="start">
+      <ion-item color="success">
+        {{user}}
+        <!-- <ion-avatar [routerLink]="['/', 'achievement']">
+          <img src="https://cdn2.iconfinder.com/data/icons/business-finance-vol-2-34/512/9_Achievement_award_cup_trophy-512.png">
+        </ion-avatar> -->
+      </ion-item>
+    </ion-buttons>
+    <ion-buttons slot="primary" *ngFor="let item of userList">
+      <ion-item color="success" *ngIf="item.userName == user">
+        <ion-img style="width: 60px; height: 50px; padding-right:10px" src="assets/stack of coin.png"></ion-img>
+        <ion-label style="padding-right:10px">{{item.point | number:0}}</ion-label>
+      </ion-item>
+    </ion-buttons>
   </ion-toolbar>
+  
 </ion-header>
 
 <ion-content>
-  <div class="ion-padding">
-    The world is your oyster.
-    <p>If you get lost, the <a target="_blank" rel="noopener" href="https://ionicframework.com/docs/">docs</a> will be your guide.</p>
+  <!-- <img [src]="photo" >
+
+  <ion-fab vertical="bottom" horizontal="center" slot="fixed">
+    <ion-fab-button (click)="takePicture()">
+      <ion-icon name="camera"></ion-icon>
+    </ion-fab-button>
+  </ion-fab> -->
+
+  <div class="slider">
+    <ion-slides pager>
+      <ion-slide  size-sm="2" offset-sm="2">
+        <ion-img class="img-responsive imageSlider" src="assets/image4.jpg"></ion-img>
+      </ion-slide>
+      <ion-slide size-sm="2"> 
+        <ion-img class="img-responsive imageSlider" src="assets/image2.jpg"></ion-img>
+      </ion-slide>
+      <ion-slide size-sm="2">
+        <ion-img class="img-responsive imageSlider" src="assets/image3.jpg"></ion-img>
+      </ion-slide>
+    </ion-slides>
   </div>
+
+  <ion-grid align="center">
+    <ion-row>
+      <ion-col size-sm="2" offset-sm="2">
+        <ion-img class="trans" src="assets/menu/PLN.jpg" (click)="comingSoon()"></ion-img>
+        <font class="transFont">PLN</font>
+      </ion-col>
+      <ion-col size-sm="2">
+        <ion-img class="trans" src="assets/menu/BPJS.jpg" (click)="comingSoon()"></ion-img>
+        <font class="transFont">BPJS</font>
+      </ion-col>
+      <ion-col size-sm="2">
+        <ion-img class="trans" src="assets/menu/Multifinance.jpg" (click)="comingSoon()"></ion-img>
+        <font class="transFont">Multifinance</font>
+      </ion-col>
+      <ion-col size-sm="2">
+        <ion-img class="trans" src="assets/menu/PDAM.jpg" (click)="comingSoon()"></ion-img>
+        <font class="transFont">PDAM</font>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size-sm="2" offset-sm="2">
+        <ion-img class="trans" src="assets/menu/Postpaid.jpg" (click)="comingSoon()"></ion-img>
+        <font class="transFont">Postpaid</font>
+      </ion-col>
+      <ion-col size-sm="2">
+        <ion-img class="trans" src="assets/menu/Insurance.jpg" (click)="comingSoon()"></ion-img>
+        <font class="transFont">Insurance</font>
+      </ion-col>
+      <ion-col  size-sm="2">
+        <ion-img class="trans" src="assets/menu/TV.jpg" (click)="comingSoon()"></ion-img>
+        <font class="transFont">TV</font>
+      </ion-col>
+      <ion-col  size-sm="2">
+        <ion-img class="trans" src="assets/menu/Telkom.jpg" (click)="comingSoon()"></ion-img>
+        <font class="transFont">Telkom</font>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size-sm="2" offset-sm="3">
+        <ion-img class="trans" src="assets/menu/Pulsa.jpg" (click)="comingSoon()"></ion-img>
+        <font class="transFont">Pulsa</font>
+      </ion-col>
+      <ion-col  size-sm="2">
+        <ion-img class="trans" src="assets/menu/Voucher Game.jpg" (click)="comingSoon()"></ion-img>
+        <font class="transFont">Voucher Game</font>
+      </ion-col>
+      <ion-col  size-sm="2">
+        <ion-img class="trans" src="assets/menu/Voucher.jpg" (click)="comingSoon()"></ion-img>
+        <font class="transFont">Voucher</font>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
 </ion-content>
+
+<ion-footer>
+  <ion-grid align="center">
+    <ion-row>
+      <ion-col style="padding:0px">
+        <button ion-button icon-only style="background-color:rgba(255, 255, 255, 0)">
+          <ion-icon id="aktifitas" class="footerIcon" name="md-paper" [routerLink]="['/', 'quiz']"></ion-icon>
+          <br/>
+          <p class="footerFont">Quiz</p>
+        </button>
+      </ion-col>
+      <ion-col style="padding:0px">
+        <button ion-button icon-only style="background-color:rgba(255, 255, 255, 0)">
+          <ion-icon id="bantuan" class="footerIcon" name="timer" [routerLink]="['/', 'history-tab']"></ion-icon>
+          <br/>
+          <p class="footerFont">History</p>
+        </button>
+      </ion-col>
+      <ion-col style="padding:0px">
+        <button ion-button icon-only style="background-color:rgba(255, 255, 255, 0)">
+          <ion-icon id="profil" class="footerIcon" name="md-person" [routerLink]="['/', 'trade-list']"></ion-icon>
+          <p class="footerFont">Account</p>
+        </button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-footer>

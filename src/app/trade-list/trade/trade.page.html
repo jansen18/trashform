@@ -1,0 +1,36 @@
+<ion-header>
+  <ion-toolbar color="success">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Other's Post</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div *ngFor="let i of userList">
+    <div *ngIf="i.userName == user">
+      <div class="spinner" *ngIf="showSpinner">
+        <div class="double-bounce1"></div>
+        <div class="double-bounce2"></div>
+      </div>
+      <div *ngFor="let list of otherList">
+        <ion-list *ngIf="list.trader != user">
+            <ion-card>
+              <ion-item>
+                <ion-label>
+                  <h2></h2>
+                  <h2>{{list.trashType}}</h2>
+                  <h2><b>Rp.</b> {{list.price}}</h2>
+                </ion-label>
+              </ion-item>
+              <ion-item>
+                <ion-button [routerLink]="['./', list.id]" (click)="sendUserInfo(list.id, i, i.id)">Buy</ion-button>
+              </ion-item>
+            </ion-card>
+        </ion-list>
+      </div>
+    </div>
+  </div>
+</ion-content>
+  
