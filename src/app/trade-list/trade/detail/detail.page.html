@@ -1,0 +1,45 @@
+<ion-header>
+  <ion-toolbar color="success">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home/trade-list"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Detail</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <div class="spinner" *ngIf="showSpinner">
+    <div class="double-bounce1"></div>
+    <div class="double-bounce2"></div>
+  </div>
+  <ion-grid *ngIf="!showSpinner">
+    <ion-list>
+      <ion-label><b>Product Information</b></ion-label>
+      <ion-row>
+        <ion-col>Item Name</ion-col>
+        <ion-col class="ion-text-end">{{detail.trashType}}</ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>Price</ion-col>
+        <ion-col style="color: rgb(21, 182, 21);" class="ion-text-end"><b>Rp {{detail.price}}</b></ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>Weight</ion-col>
+        <ion-col class="ion-text-end">{{detail.weight}} Kg</ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>Seller</ion-col>
+        <ion-col class="ion-text-end">{{detail.trader}}</ion-col>
+      </ion-row>
+      <ion-label><b>Address</b></ion-label>
+      <ion-row>
+        <ion-col class="ion-text-start">{{detail.location}}</ion-col>
+      </ion-row>
+    </ion-list>
+  </ion-grid>
+</ion-content>
+
+<ion-footer>
+  <ion-button expand="block" color="success" (click)="onPickLocation()">Pick Delivery Location</ion-button>
+  <ion-button expand="block" color="success" [disabled]="address == ''" (click)='paymentPage()'>Payment</ion-button>
+</ion-footer>
