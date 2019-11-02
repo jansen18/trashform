@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
 import { ModalController, LoadingController } from '@ionic/angular';
 import { SignUpComponent } from './sign-up/sign-up.component';
-import { AchievementService, userInfo } from '../achievement.service';
+import { AchievementService, userInfo } from '../user.service';
 import { userInfoLocal } from '../userInfo.model';
 
 @Component({
@@ -17,22 +17,36 @@ export class AuthPage implements OnInit {
   user: string;
   userList: userInfo[];
   userInfo: userInfoLocal;
+  isAuth: boolean = false;
+  error: boolean = false;
 
   constructor(
     private modalCtrl: ModalController, 
     private authSvc: AuthGuardService, 
     private router: Router,
     private achievementSvc: AchievementService,
-    private loadingController: LoadingController) { }
+    private loadingController: LoadingController
+  ) { }
 
   ngOnInit() {
   }
 
   onLogin(f: NgForm) {
+    var i = 0;
     this.authSvc.login(f.value.username, f.value.pwd);
-    this.user = this.authSvc.getEmail();
 
-    this.router.navigateByUrl('/home');
+    this.achievementSvc.getUserInfo().subscribe(res => {
+      this.userList = res;
+      while(i < res.length){
+        if(res[i].userName == f.value.username && res[i].password == f.value.pwd){
+          this.router.navigateByUrl('/home');
+          this.isAuth = true;
+          break;
+        }
+        i++;
+      }
+      this.error = true;
+    });
   }  
   
   async presentLoadingWithOptions() {

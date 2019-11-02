@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { HttpClient } from '@angular/common/http';
-import { userInfo, AchievementService } from '../achievement.service';
+import { userInfo, AchievementService } from '../user.service';
 
 interface AuthResponseData {
   kind: string,
@@ -25,10 +25,9 @@ export class AuthGuardService {
   login(name: string, password: string) {
     this.isAuthenticated = true;
     this.userName = name;
-    console.log(this.isAuthenticated);
   }
 
-  getEmail(){
+  getUser(){
     return this.userName;
   }
 
