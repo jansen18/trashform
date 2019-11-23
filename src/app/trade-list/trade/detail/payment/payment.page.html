@@ -1,0 +1,47 @@
+<ion-header>
+  <ion-toolbar color="success">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home/trade-list"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Payment</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div padding style="background-color: lightgray;">
+    <ion-card>
+      <ion-item lines="none">
+        <ion-label>
+          <h2>{{detail.trashType}}</h2>
+          <h2 style="color: rgb(21, 182, 21);"><b>Rp {{detail.price}}</b></h2>
+        </ion-label>
+      </ion-item>
+    </ion-card>
+  </div>
+  <ion-grid padding>
+    <ion-list>
+      <ion-row>
+        <ion-col>Total price</ion-col>
+        <ion-col class="ion-text-end">{{detail.price | currency:"IDR "}}</ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>Delvery price</ion-col>
+        <ion-col class="ion-text-end">IDR 10,000.00</ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>Weight</ion-col>
+        <ion-col class="ion-text-end">{{detail.weight}} Kg</ion-col>
+      </ion-row>
+      <ion-item-divider></ion-item-divider>
+      <ion-row>
+        <ion-col>Total Price</ion-col>
+        <ion-col class="ion-text-end" style="color: rgb(21, 182, 21);"><b>{{totalPrice | currency:"IDR "}}</b></ion-col>
+      </ion-row>
+    </ion-list>
+  </ion-grid>
+
+</ion-content>
+
+<ion-footer>
+  <ion-button expand="block" color="success" (click)="Pay()">Finish</ion-button>
+</ion-footer>
