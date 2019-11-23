@@ -32,6 +32,9 @@
     </ion-list>
     <ion-button expand="block" color="success" [disabled]="!f.valid" type="submit">Login</ion-button>
     <ion-button expand="block" color="success" fill='clear' (click)='presentSignUpModal()'>Sign Up</ion-button>
+    <div *ngIf="!isAuth && error" style="text-align: center;">
+      <ion-text color="danger">Invalid Username or Password</ion-text>
+    </div>
   </form>
 </ion-content>
   
