@@ -19,8 +19,12 @@ const routes: Routes = [
     CommonModule,
     FormsModule,
     IonicModule,
-    RouterModule.forChild(routes)
+    RouterModule.forChild(routes),
+    AgmCoreModule.forRoot({
+      apiKey: environment.firebase.mapsAPIKey
+    })
   ],
-  declarations: [DetailPage]
+  declarations: [DetailPage, MapModal2Component],
+  entryComponents: [MapModal2Component]
 })
 export class DetailPageModule {}
