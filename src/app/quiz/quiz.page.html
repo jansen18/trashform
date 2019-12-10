@@ -1,0 +1,37 @@
+<ion-header>
+  <ion-toolbar color="success">
+    <ion-title>Quiz</ion-title>
+    <ion-buttons slot="primary" padding>
+      <ion-icon name="close" (click)="onCancel()"></ion-icon>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-radio-group>
+      <ion-list-header>
+        <ion-label>{{question.question}}</ion-label>
+      </ion-list-header>
+  
+      <ion-item class="item-text-wrap">
+        <ion-label>{{question.choice1}}</ion-label>
+        <ion-radio slot="start" value="1" (click)="getAnswer(1)"></ion-radio>
+      </ion-item>
+  
+      <ion-item class="item-text-wrap">
+        <ion-label>{{question.choice2}}</ion-label>
+        <ion-radio slot="start" value="2" (click)="getAnswer(2)"></ion-radio>
+      </ion-item>
+  
+      <ion-item class="item-text-wrap">
+        <ion-label>{{question.choice3}}</ion-label>
+        <ion-radio slot="start" value="3" (click)="getAnswer(3)"></ion-radio>
+      </ion-item>
+    </ion-radio-group>
+  </ion-list>
+</ion-content>
+
+<ion-footer>
+  <ion-button expand="block" [disabled]="answer == null" (click)="next()">Next</ion-button>
+</ion-footer>
