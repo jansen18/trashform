@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ToastController, AlertController, ModalController } from '@ionic/angular';
-import { PricelistService, Trade } from '../pricelist.service';
+import { PricelistService, Trade } from '../transaction.service';
 import { HistoryService } from 'src/app/history-tab/history.service';
 import { AngularFireDatabase, AngularFireList} from 'angularfire2/database';
 import { Observable, Subscription } from 'rxjs';
@@ -46,36 +46,35 @@ export class PostedPage implements OnInit {
     private sanitizer: DomSanitizer) { }
 
   ngOnInit() {
-    this.tradeSvc.getAllTrade(this.authSvc.getEmail()).subscribe(res => {
+    this.tradeSvc.getAllTrade(this.authSvc.getUser()).subscribe(res => {
       this.loadedList = res;
       this.showSpinner = false;
     });
-    this.user = this.authSvc.getEmail();
+    this.user = this.authSvc.getUser();
   }
 
   ionViewWillEnter(){
-    this.tradeSvc.getAllTrade(this.authSvc.getEmail()).subscribe(res => {
+    this.tradeSvc.getAllTrade(this.authSvc.getUser()).subscribe(res => {
       this.loadedList = res;
       this.showSpinner = false;
     });
-    this.user = this.authSvc.getEmail();
+    this.user = this.authSvc.getUser();
   }
 
   async takePicture() {
-    
     const image = await Plugins.Camera.getPhoto({
       quality: 100,
       allowEditing: false,
-      resultType: CameraResultType.Base64,
+      resultType: CameraResultType.DataUrl,
       source: CameraSource.Camera
     });
 
-    this.photo = this.sanitizer.bypassSecurityTrustResourceUrl(image && (image.base64String));
+    this.photo = this.sanitizer.bypassSecurityTrustResourceUrl(image && (image.dataUrl));
     this.presentAlert();
     console.log(this.photo);
   }
 
-  async presentTradeModal(asd: Trade, id: string) {
+  async presentTradeModal(trade: Trade, id: string) {
     this.subscription = this.addressSvc.getAddress().subscribe(data => {
       this.address = data;
       console.log(this.address);
@@ -87,25 +86,25 @@ export class PostedPage implements OnInit {
           name: 'item',
           type: 'text',
           placeholder: 'Item',
-          label: asd.trashType
+          value: trade.trashType,
         },
         {
           name: 'price',
           type: 'number',
           placeholder: 'Price (Rp)',
-          label: asd.price.toString()
+          value: trade.price.toString()
         },
         {
           name: 'weight',
           type: 'number',
           placeholder: 'Weight (Kg)',
-          label: asd.weight.toString(),
+          value: trade.weight.toString(),
         },
         {
           name: 'description',
           type: 'text',
           placeholder: 'Product Description',
-          label: 'desc',
+          value: trade.description.toString(),
         },
       ],
       buttons: [
@@ -124,7 +123,7 @@ export class PostedPage implements OnInit {
               price: data.price, 
               weight: data.weight, 
               datePosted: new Date().toDateString(), 
-              trader: this.authSvc.getEmail(),
+              trader: this.authSvc.getUser(),
               status: 'available',
               description: data.description,
               location: this.address
@@ -189,7 +188,7 @@ export class PostedPage implements OnInit {
               price: data.price, 
               weight: data.weight, 
               datePosted: new Date().toDateString(), 
-              trader: this.authSvc.getEmail(),
+              trader: this.authSvc.getUser(),
               status: 'available',
               description: data.description,
               location: this.address
@@ -226,15 +225,6 @@ export class PostedPage implements OnInit {
       this.lat = modalData.data.lat;
       this.lng = modalData.data.lng;
 
-      // let options: NativeGeocoderOptions = {
-      //   useLocale: true,
-      //   maxResults: 5
-      // };
-      
-      // this.nativegeocorder.reverseGeocode(this.lat, this.lng, options)
-      //   .then((result: NativeGeocoderResult[]) => console.log(JSON.stringify(result[0])))
-      //   .catch((error: any) => console.log(error));
-
       this.getAddress(modalData.data.lat, modalData.data.lng).subscribe(
         (address) => {
           this.addressSvc.setAddress(address);
@@ -249,6 +239,44 @@ export class PostedPage implements OnInit {
       );
     });
     return await modal.present();
+  }
+
+  async onPickLocationUpdate(trade: Trade, id: string){
+    const modal = await this.modalCtrl.create({
+      component: MapModalComponent
+    });
+    modal.onDidDismiss().then((modalData) => {
+      this.lat = modalData.data.lat;
+      this.lng = modalData.data.lng;
+
+      this.getAddress(modalData.data.lat, modalData.data.lng).subscribe(
+        (address) => {
+          this.addressSvc.setAddress(address);
+          this.addressSvc.getAddress().subscribe(
+            currAddress => {
+              this.address = currAddress;
+              console.log(this.address);
+            }
+          );
+          this.takePictureForUpdate(trade, id);
+        }
+      );
+    });
+    return await modal.present();    
+  }
+
+  async takePictureForUpdate(trade: Trade, id: string){
+    
+    const image = await Plugins.Camera.getPhoto({
+      quality: 100,
+      allowEditing: false,
+      resultType: CameraResultType.DataUrl,
+      source: CameraSource.Camera
+    });
+
+    this.photo = this.sanitizer.bypassSecurityTrustResourceUrl(image && (image.dataUrl));
+    this.presentTradeModal(trade, id);
+    console.log(this.photo);
   }
 
   private getAddress(lat: number, lng: number){
