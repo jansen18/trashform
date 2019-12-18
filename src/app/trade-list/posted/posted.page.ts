@@ -13,6 +13,9 @@ import { environment } from 'src/environments/environment';
 import { Plugins, Capacitor, CameraResultType, CameraSource, Camera } from '@capacitor/core';
 import { defineCustomElements } from '@ionic/pwa-elements/loader';
 import { SafeResourceUrl, DomSanitizer } from '@angular/platform-browser';
+import * as firebase from 'firebase';
+
+
 defineCustomElements(window);
 
 
@@ -33,6 +36,7 @@ export class PostedPage implements OnInit {
   photo: SafeResourceUrl;
   selectedImage: string;
   subscription: Subscription;
+  image: any;
 
   constructor(
     private toastController: ToastController,
@@ -68,6 +72,9 @@ export class PostedPage implements OnInit {
       resultType: CameraResultType.DataUrl,
       source: CameraSource.Camera
     });
+
+    console.log(image);
+    this.image = image;
 
     this.photo = this.sanitizer.bypassSecurityTrustResourceUrl(image && (image.dataUrl));
     this.presentAlert();
@@ -194,6 +201,16 @@ export class PostedPage implements OnInit {
               location: this.address
               // image: this.photo
             };
+
+            var storage = firebase.storage();
+            var storageRef = storage.ref().child('image').child('contohimage');
+
+            var photo = this.photo;
+            storageRef.putString(this.image.dataUrl, 'data_url').then(function(snapshot) {
+                console.log('uploaded a data_url string');
+            })
+
+            
             console.log(this.postItem);
             this.tradeSvc.addTrade(this.postItem);
             // this.tradeSvc.addTradeList(this.postItem);
