@@ -3,7 +3,7 @@ import { Quiz } from './quiz.model';
 import { QuizService } from './quiz.service';
 import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
-import { AchievementService, userInfo } from '../achievement.service';
+import { AchievementService, userInfo } from '../user.service';
 import { userInfoLocal } from '../userInfo.model';
 
 @Component({
@@ -95,6 +95,7 @@ export class QuizPage implements OnInit {
   async showResult(){
     this.userInfoLocal = this.achievementSvc.getLocalUser();
     this.userInfoLocal.point += this.totalCorrect * 50;
+    
     this.userInfo = {
       password: this.userInfoLocal.password,
       point: this.userInfoLocal.point,

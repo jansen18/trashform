@@ -15,7 +15,7 @@ const routes: Routes = [
                 children: [
                     {
                         path: '',
-                        loadChildren: './trade/trade.module#TradePageModule' 
+                        loadChildren: './trade/trade.module#TradePageModule'
                     },
                     {
                         path: ':listId',

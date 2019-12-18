@@ -24,6 +24,7 @@ export class AchievementService {
   userInfo: userInfoLocal;
   id: string;
   itemID: string;
+  
   constructor(private db: AngularFirestore) { 
     this.userCol = this.db.collection<userInfo>('userInfo');
   }
@@ -69,7 +70,7 @@ export class AchievementService {
     return this.userCol.doc(id).update(user);
   }
 
-  getUserInfo(userName: string){
+  getUserInfo(){
     this.userCol = this.db.collection<userInfo>('userInfo');
 
     this.user = this.userCol.snapshotChanges().pipe(  

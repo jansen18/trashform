@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { Trade, PricelistService } from 'src/app/trade-list/pricelist.service';
+import { Trade, PricelistService } from 'src/app/trade-list/transaction.service';
 import { NavParams, ToastController, AlertController } from '@ionic/angular';
 import { ActivatedRoute, Router } from '@angular/router';
-import { userInfo, AchievementService } from 'src/app/achievement.service';
+import { userInfo, AchievementService } from 'src/app/user.service';
 import { HistoryService, History } from 'src/app/history-tab/history.service';
 import { AuthGuardService } from 'src/app/auth/auth-guard.service';
 import { userInfoLocal } from 'src/app/userInfo.model';
@@ -47,7 +47,6 @@ export class PaymentPage implements OnInit {
   Pay(){
     this.presentTradeModal(this.achievementSvc.getLocalItemID(), this.achievementSvc.getLocalUser(), this.achievementSvc.getLocalUserID());
   }
-
   
   async presentTradeModal(id: string, user: userInfoLocal, userID: string) {
     // console.log(id);
@@ -73,7 +72,7 @@ export class PaymentPage implements OnInit {
               weight: this.detail.weight,
               dateTraded: new Date().toDateString(),
               seller: this.detail.trader,
-              boughtBy: this.authSvc.getEmail(),
+              boughtBy: this.authSvc.getUser(),
               status: 'ordered',
               location: this.address,
               notes: this.addressSvc.getNote(),
@@ -91,7 +90,7 @@ export class PaymentPage implements OnInit {
             console.log(this.history);
             this.historySvc.addHistory(this.history);
             
-            this.tradeSvc.getAllTrade1(this.authSvc.getEmail()).subscribe(res => {
+            this.tradeSvc.getAllTrade1(this.authSvc.getUser()).subscribe(res => {
               this.otherList = res;
             });
 

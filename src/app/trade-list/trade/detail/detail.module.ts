@@ -6,6 +6,10 @@ import { Routes, RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 
 import { DetailPage } from './detail.page';
+import { MapModal2Component } from './map-modal2/map-modal2.component';
+import { AgmCoreModule } from '@agm/core';
+import { environment } from 'src/environments/environment';
+import { PaymentPage } from './payment/payment.page';
 
 const routes: Routes = [
   {

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AchievementService, userInfo } from '../achievement.service';
+import { AchievementService, userInfo } from '../user.service';
 import { AuthGuardService } from '../auth/auth-guard.service';
 import { userInfoLocal } from '../userInfo.model';
 import { SafeResourceUrl, DomSanitizer } from '@angular/platform-browser';
@@ -30,8 +30,8 @@ export class HomePage implements OnInit{
   
   ngOnInit(){    
     var i = 0;
-    this.user = this.authSvc.getEmail();
-    this.achievementSvc.getUserInfo(this.user).subscribe(res => {
+    this.user = this.authSvc.getUser();
+    this.achievementSvc.getUserInfo().subscribe(res => {
       this.userList = res;
       while(i < res.length){
         if(res[i].userName == this.user){

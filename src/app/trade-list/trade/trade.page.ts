@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Trade, PricelistService } from '../pricelist.service';
+import { Trade, PricelistService } from '../transaction.service';
 import { ToastController, AlertController, ModalController } from '@ionic/angular';
 import { HistoryService, History } from 'src/app/history-tab/history.service';
 import { AuthGuardService } from 'src/app/auth/auth-guard.service';
-import { AchievementService, userInfo } from 'src/app/achievement.service';
+import { AchievementService, userInfo } from 'src/app/user.service';
 import { userInfoLocal } from 'src/app/userInfo.model';
 
 @Component({
@@ -35,12 +35,12 @@ export class TradePage implements OnInit {
   }
 
   ionViewWillEnter(){
-    this.tradeSvc.getAllTrade(this.authSvc.getEmail()).subscribe(res => {
+    this.tradeSvc.getAllTrade(this.authSvc.getUser()).subscribe(res => {
       this.otherList = res;
       this.showSpinner = false;
     });
-    this.user = this.authSvc.getEmail();
-    this.achievementSvc.getUserInfo(this.user).subscribe(res => {
+    this.user = this.authSvc.getUser();
+    this.achievementSvc.getUserInfo().subscribe(res => {
       this.userList = res;
     });
   }
