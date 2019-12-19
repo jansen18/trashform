@@ -12,7 +12,8 @@ export interface Trade {
   trader: string,
   status: string,
   description: string,
-  location: string
+  location: string,
+  image : string,
 }
 
 @Injectable({

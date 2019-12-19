@@ -59,9 +59,16 @@ export class PostedPage implements OnInit {
 
   ionViewWillEnter(){
     this.tradeSvc.getAllTrade(this.authSvc.getUser()).subscribe(res => {
+        res.forEach(item => {
+            var storageRef = firebase.storage().ref();
+            storageRef.child('image').child(item.image).getDownloadURL().then(function(url){
+                item.image = url;
+            })
+        })
       this.loadedList = res;
       this.showSpinner = false;
     });
+
     this.user = this.authSvc.getUser();
   }
 
@@ -190,25 +197,26 @@ export class PostedPage implements OnInit {
         }, {
           text: 'Post',
           handler: data => {
-            this.postItem = {
-              trashType: data.item, 
-              price: data.price, 
-              weight: data.weight, 
-              datePosted: new Date().toDateString(), 
-              trader: this.authSvc.getUser(),
-              status: 'available',
-              description: data.description,
-              location: this.address
-              // image: this.photo
-            };
+            var photo = this.image.dataUrl;
+
+            var fileName = (this.loadedList.length + 1).toString();
 
             var storage = firebase.storage();
-            var storageRef = storage.ref().child('image').child('contohimage');
-
-            var photo = this.photo;
-            storageRef.putString(this.image.dataUrl, 'data_url').then(function(snapshot) {
+            var storageRef = storage.ref().child('image').child(fileName);
+            storageRef.putString(photo, 'data_url').then(function(snapshot) {
                 console.log('uploaded a data_url string');
             })
+            this.postItem = {
+                trashType: data.item, 
+                price: data.price, 
+                weight: data.weight, 
+                datePosted: new Date().toDateString(), 
+                trader: this.authSvc.getUser(),
+                status: 'available',
+                description: data.description,
+                location: this.address,
+                image: fileName
+            };
 
             
             console.log(this.postItem);
