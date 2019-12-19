@@ -8,6 +8,7 @@ import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { MapModal2Component } from './map-modal2/map-modal2.component';
 import { PaymentPage } from './payment/payment.page';
+import * as firebase from 'firebase';
 
 @Component({
   selector: 'app-detail',
@@ -43,7 +44,13 @@ export class DetailPage implements OnInit {
     console.log(this.id);
     if(this.id){
       this.tradelistSvc.getTrade(this.id).subscribe(res => {
+        var storageRef = firebase.storage().ref();
+        storageRef.child('image').child(res.image).getDownloadURL().then(function(url){
+          res['imageoriginal'] = res.image;
+          res.image = url;
+        })
         this.detail = res;
+        console.log(this.detail);
         this.showSpinner = false;
       });
     }
@@ -139,9 +146,11 @@ export class DetailPage implements OnInit {
     // this.router.navigate(['./payment', this.detail]);
     let navigationExtras: NavigationExtras = {
       queryParams: {
-          detail: JSON.stringify(this.detail)
+          detail: JSON.stringify(this.detail),
+          imageoriginal: this.detail['imageoriginal']
       }
     };
+    console.log(this.detail);
     this.navCtrl.navigateForward(['./payment'], navigationExtras);
   }
 

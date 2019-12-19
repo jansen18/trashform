@@ -13,7 +13,8 @@ export interface History {
   status: string,
   location: string,
   notes: string,
-  phone: string
+  phone: string,
+  image: string
 }
 
 @Injectable({

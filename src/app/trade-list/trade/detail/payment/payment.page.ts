@@ -25,6 +25,7 @@ export class PaymentPage implements OnInit {
   address: string;
   subscription: Subscription;
   notes: string;
+  imageoriginal: string;
 
   constructor(
     private route: ActivatedRoute,
@@ -40,6 +41,7 @@ export class PaymentPage implements OnInit {
   ngOnInit() {
     this.route.queryParams.subscribe(params => {
       this.detail = JSON.parse(params["detail"]);
+      this.imageoriginal = params['imageoriginal'];
       this.totalPrice = parseInt(this.detail.price) + 10000;
     });
   }
@@ -76,7 +78,8 @@ export class PaymentPage implements OnInit {
               status: 'ordered',
               location: this.address,
               notes: this.addressSvc.getNote(),
-              phone: '+62 ' + user.phone
+              phone: '+62 ' + user.phone,
+              image: this.imageoriginal
             }
             this.userInfo = {
               point: user.point,
@@ -98,7 +101,7 @@ export class PaymentPage implements OnInit {
             this.userInfo.point.toFixed(0);
             this.achievementSvc.updateUserPoint(this.userInfo, userID);
 
-            this.tradeSvc.removeTrade(id);
+            // this.tradeSvc.removeTrade(id);
 
             this.alertController.dismiss();
             this.deleted();

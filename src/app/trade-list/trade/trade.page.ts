@@ -5,6 +5,7 @@ import { HistoryService, History } from 'src/app/history-tab/history.service';
 import { AuthGuardService } from 'src/app/auth/auth-guard.service';
 import { AchievementService, userInfo } from 'src/app/user.service';
 import { userInfoLocal } from 'src/app/userInfo.model';
+import * as firebase from 'firebase';
 
 @Component({
   selector: 'app-trade',
@@ -36,6 +37,13 @@ export class TradePage implements OnInit {
 
   ionViewWillEnter(){
     this.tradeSvc.getAllTrade(this.authSvc.getUser()).subscribe(res => {
+      res.forEach(item => {
+        var storageRef = firebase.storage().ref();
+        storageRef.child('image').child(item.image).getDownloadURL().then(function(url){
+            item['imageoriginal'] = item.image;
+            item.image = url;
+        })
+      })
       this.otherList = res;
       this.showSpinner = false;
     });

@@ -62,6 +62,7 @@ export class PostedPage implements OnInit {
         res.forEach(item => {
             var storageRef = firebase.storage().ref();
             storageRef.child('image').child(item.image).getDownloadURL().then(function(url){
+                item['imageoriginal'] = item.image;
                 item.image = url;
             })
         })
@@ -132,20 +133,29 @@ export class PostedPage implements OnInit {
         }, {
           text: 'Post',
           handler: data => {
-            this.detail = {
-              trashType: data.item, 
-              price: data.price, 
-              weight: data.weight, 
-              datePosted: new Date().toDateString(), 
-              trader: this.authSvc.getUser(),
-              status: 'available',
-              description: data.description,
-              location: this.address
-              // image: this.photo
+            
+            var photo = this.image.dataUrl;
+            console.log(data);
+            var fileName = trade['imageoriginal'].toString();
+
+            var storage = firebase.storage();
+            var storageRef = storage.ref().child('image').child(fileName);
+            storageRef.putString(photo, 'data_url').then(function(snapshot) {
+                console.log('uploaded a data_url string');
+            })
+            this.postItem = {
+                trashType: data.item, 
+                price: data.price, 
+                weight: data.weight, 
+                datePosted: new Date().toDateString(), 
+                trader: this.authSvc.getUser(),
+                status: 'available',
+                description: data.description,
+                location: this.address,
+                image: fileName
             };
-            console.log(this.detail);
-            this.tradeSvc.updateTrade(this.detail, id);
-            // this.tradeSvc.addTradeList(this.postItem);
+            console.log(this.postItem);
+            this.tradeSvc.updateTrade(this.postItem, id);
           }
         }
       ]
@@ -298,6 +308,9 @@ export class PostedPage implements OnInit {
       resultType: CameraResultType.DataUrl,
       source: CameraSource.Camera
     });
+
+    console.log(image);
+    this.image = image;
 
     this.photo = this.sanitizer.bypassSecurityTrustResourceUrl(image && (image.dataUrl));
     this.presentTradeModal(trade, id);
