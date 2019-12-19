@@ -4,7 +4,7 @@ import { AuthGuardService } from '../auth/auth-guard.service';
 import { userInfoLocal } from '../userInfo.model';
 import { SafeResourceUrl, DomSanitizer } from '@angular/platform-browser';
 import { Plugins, Capacitor, CameraResultType, CameraSource } from '@capacitor/core';
-import { ToastController } from '@ionic/angular';
+import { ToastController, AlertController } from '@ionic/angular';
 import { defineCustomElements } from '@ionic/pwa-elements/loader';
 defineCustomElements(window);
 
@@ -25,6 +25,7 @@ export class HomePage implements OnInit{
     private achievementSvc: AchievementService,
     private authSvc: AuthGuardService,
     private toastController: ToastController,
+    private alertController: AlertController,
     private sanitizer: DomSanitizer
   ) {}
   
@@ -65,5 +66,29 @@ export class HomePage implements OnInit{
     });
     toast.present();
   }
+
+ async onLogout() {
+    let alert = await this.alertController.create({
+      header: 'Confirm purchase',
+      message: 'Do you want to Logout?',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancel clicked');
+          }
+        },
+        {
+          text: 'Yes',
+          handler: () => {
+            this.authSvc.logOut();
+          }
+        }
+      ]
+    });
+    await alert.present();
+  }
+
 
 }

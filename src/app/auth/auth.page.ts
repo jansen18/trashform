@@ -41,6 +41,7 @@ export class AuthPage implements OnInit {
         if(res[i].userName == f.value.username && res[i].password == f.value.pwd){
           this.router.navigateByUrl('/home');
           this.isAuth = true;
+          f.reset();
           break;
         }
         i++;

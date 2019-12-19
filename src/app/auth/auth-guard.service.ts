@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { userInfo, AchievementService } from '../user.service';
+import { Router } from '@angular/router';
 
 interface AuthResponseData {
   kind: string,
@@ -20,7 +21,7 @@ export class AuthGuardService {
   isAuthenticated = false;
   userName: string;
 
-  constructor() { } 
+  constructor(private router: Router) { } 
 
   login(name: string, password: string) {
     this.isAuthenticated = true;
@@ -29,6 +30,11 @@ export class AuthGuardService {
 
   getUser(){
     return this.userName;
+  }
+
+  logOut() {
+    this.isAuthenticated = false;
+    this.router.navigateByUrl('/auth');
   }
 
 }
